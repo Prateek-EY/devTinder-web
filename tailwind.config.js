@@ -7,6 +7,11 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["dark"], // choose themes
+    // OR single custom theme:
+    // themes: ["dracula"]
+  },
 }
 
