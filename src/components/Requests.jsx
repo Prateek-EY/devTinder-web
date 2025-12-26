@@ -2,14 +2,17 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { addRequests } from '../utils/requestSlice';
+import { addRequests, removeRequests } from '../utils/requestSlice';
 
 const Requests = () => {
+
     const store = useSelector((store) => store.requests);
     const dispatch = useDispatch();
     const reviewrequest = async (status,requestId) => {
         try{
             const response = await axios.post(BASE_URL+'request/respond/'+status+'/'+requestId,{}, { withCredentials: true });
+            dispatch(removeRequests(requestId));
+
         }
         catch(err){
             console.log("Error reviewing request", err.response);
