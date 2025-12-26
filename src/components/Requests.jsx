@@ -7,6 +7,14 @@ import { addRequests } from '../utils/requestSlice';
 const Requests = () => {
     const store = useSelector((store) => store.requests);
     const dispatch = useDispatch();
+    const reviewrequest = async (status,requestId) => {
+        try{
+            const response = await axios.post(BASE_URL+'request/respond/'+status+'/'+requestId,{}, { withCredentials: true });
+        }
+        catch(err){
+            console.log("Error reviewing request", err.response);
+        }
+    }
     const fetchRequests = async () => {
         try{
             const response = await axios.get(BASE_URL+'user/requests/received', { withCredentials: true });
@@ -37,8 +45,8 @@ const Requests = () => {
         <div className='flex gap-8 m-4 p-4 mx-auto justify-between items-center bg-base-200 rounded-lg w-1/2' key={connection.fromUser._id}>
             <h2>{connection.fromUser.firstName} {connection.fromUser.lastName}</h2>
             <div className='flex gap-4 mt-2'>
-            <button className="btn btn-primary">Reject</button>
-            <button className="btn btn-secondary">Accept</button>
+            <button className="btn btn-primary" onClick={() => reviewrequest("rejected",connection._id)}>Reject</button>
+            <button className="btn btn-secondary" onClick={() => reviewrequest("accepted",connection._id)}>Accept</button>
             </div>
         </div>
         </>
