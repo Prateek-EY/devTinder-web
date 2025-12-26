@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRequests, removeRequests } from '../utils/requestSlice';
 
 const Requests = () => {
-
+    const [buttonStore,setButtonStore] = useState({});
     const store = useSelector((store) => store.requests);
     const dispatch = useDispatch();
     const reviewrequest = async (status,requestId) => {
         try{
             const response = await axios.post(BASE_URL+'request/respond/'+status+'/'+requestId,{}, { withCredentials: true });
+            setButtonStore((prev) => ({...prev, [requestId]: true}));
             dispatch(removeRequests(requestId));
 
         }
@@ -48,8 +49,8 @@ const Requests = () => {
         <div className='flex gap-8 m-4 p-4 mx-auto justify-between items-center bg-base-200 rounded-lg w-1/2' key={connection.fromUser._id}>
             <h2>{connection.fromUser.firstName} {connection.fromUser.lastName}</h2>
             <div className='flex gap-4 mt-2'>
-            <button className="btn btn-primary" onClick={() => reviewrequest("rejected",connection._id)}>Reject</button>
-            <button className="btn btn-secondary" onClick={() => reviewrequest("accepted",connection._id)}>Accept</button>
+            <button className="btn btn-primary" onClick={() => reviewrequest("rejected",connection._id)} disabled={buttonStore[connection._id]}>Reject</button>
+            <button className="btn btn-secondary" onClick={() => reviewrequest("accepted",connection._id)} disabled={buttonStore[connection._id]}>Accept</button>
             </div>
         </div>
         </>
