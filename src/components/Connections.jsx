@@ -36,7 +36,7 @@ const Connections = () => {
     <div className='justify-center my-10'>
         <h1 className='text-bold text-2xl'>Connections</h1>
        {store.map((connection) => (
-        <div className='m-4 p-4 bg-base-200 rounded-lg'>
+        <div className='m-4 p-4 bg-base-200 rounded-lg' key={connection._id}>
             <h2>{connection.firstName} {connection.lastName}</h2>
         </div>
        ))}
